@@ -1,0 +1,6 @@
+.git
+*.pem
+*.ppk
+*.key
+.env
+__pycache__

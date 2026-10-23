@@ -1,12 +1,11 @@
-FROM python:3.11-slim
+FROM ubuntu:22.04
 
-WORKDIR /app
+RUN apt-get update && apt-get install -y nano
+RUN apt-get install -y python3 python3-pip
+RUN pip3 install flask
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY . /site/
 
-COPY . .
+EXPOSE 5001
 
-EXPOSE 8000
-
-CMD ["python", "app.py"]
+CMD ["python3", "/site/app.py"]
