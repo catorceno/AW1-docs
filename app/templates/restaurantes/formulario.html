@@ -2,18 +2,43 @@
 
 {% block titulo %}{{ 'Editar restaurante' if restaurante else 'Nuevo restaurante' }}{% endblock %}
 
+{% block migas %}
+  {% if restaurante %}
+    <span class="migas-sep">/</span>
+    <a href="{{ url_for('detalle_restaurante', restaurante_id=restaurante.id) }}">{{ restaurante.nombre }}</a>
+    <span class="migas-sep">/</span>
+    <span class="migas-actual">Editar</span>
+  {% else %}
+    <span class="migas-sep">/</span>
+    <span class="migas-actual">Nuevo</span>
+  {% endif %}
+{% endblock %}
+
 {% block contenido %}
   <!-- ~: operador Jinja para unir textos -->
   <h1>{{ 'Editar ' ~ restaurante.nombre if restaurante else 'Nuevo restaurante' }}</h1>
 
-  <form method="POST" action="{{ url_for('editar_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('crear_restaurante') }}">
-    <input name="nombre" type="text" placeholder="Nombre" value="{{ restaurante.nombre if restaurante else '' }}" required>
-    <input name="ciudad" type="text" placeholder="Ciudad" value="{{ restaurante.ciudad if restaurante else '' }}" required>
-    <input name="direccion" type="text" placeholder="Dirección" value="{{ (restaurante.direccion or '') if restaurante else '' }}">
-    <input name="telefono" type="text" placeholder="Telefono" value="{{ (restaurante.telefono or '') if restaurante else '' }}">
+  <form class="formulario" method="POST" action="{{ url_for('editar_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('crear_restaurante') }}">
+    <label class="campo">
+      <span>Nombre</span>
+      <input name="nombre" type="text" placeholder="Nombre del restaurante" value="{{ restaurante.nombre if restaurante else '' }}" required>
+    </label>
+    <label class="campo">
+      <span>Ciudad</span>
+      <input name="ciudad" type="text" placeholder="Ciudad" value="{{ restaurante.ciudad if restaurante else '' }}" required>
+    </label>
+    <label class="campo">
+      <span>Dirección <small>opcional</small></span>
+      <input name="direccion" type="text" placeholder="Dirección" value="{{ (restaurante.direccion or '') if restaurante else '' }}">
+    </label>
+    <label class="campo">
+      <span>Teléfono <small>opcional</small></span>
+      <input name="telefono" type="text" placeholder="Teléfono" value="{{ (restaurante.telefono or '') if restaurante else '' }}">
+    </label>
 
-    <button type="submit">{{'Guardar cambios' if restaurante else 'Crear'}}</button>
-    <a href="{{ url_for('detalle_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('listar_restaurantes') }}">Cancelar</a>
+    <div class="acciones">
+      <button class="boton boton-primario" type="submit">{{ 'Guardar cambios' if restaurante else 'Crear' }}</button>
+      <a class="boton boton-fantasma" href="{{ url_for('detalle_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('listar_restaurantes') }}">Cancelar</a>
+    </div>
   </form>
-
 {% endblock %}

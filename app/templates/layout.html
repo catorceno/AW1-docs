@@ -3,20 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block titulo %}La Carta{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+  <title>{% block titulo %}Inicio{% endblock %} · La Carta</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <nav></nav>
+  {# request.endpoint -> nombre de la función de la ruta actual; sirve para marcar el ítem activo del menú #}
+  {% set seccion = request.endpoint or '' %}
 
-  {% with mensajes = get_flashed_messages(with_categories=true) %}
-    {% for categoria, texto in mensajes %}
-      <div class="aviso {{ categoria }}">{{ texto }}</div>
-    {% endfor %}
-  {% endwith %}
-  
-  <main>
-    {% block contenido %}{% endblock %}
-  </main>
+  <div class="app">
+    <aside class="barra-lateral">
+      <a class="espacio" href="{{ url_for('listar_restaurantes') }}">
+        <span class="espacio-icono" aria-hidden="true">L</span>
+        <span class="espacio-nombre">La Carta</span>
+      </a>
+
+      <nav class="nav" aria-label="Navegación principal">
+        <a class="nav-item {{ 'activo' if seccion in ['listar_restaurantes', 'detalle_restaurante', 'editar_restaurante'] }}"
+           href="{{ url_for('listar_restaurantes') }}">
+          <span class="nav-icono" aria-hidden="true">☰</span>
+          <span>Restaurantes</span>
+        </a>
+        <a class="nav-item {{ 'activo' if seccion == 'formulario_crear_restaurante' }}"
+           href="{{ url_for('formulario_crear_restaurante') }}">
+          <span class="nav-icono" aria-hidden="true">＋</span>
+          <span>Nuevo restaurante</span>
+        </a>
+      </nav>
+    </aside>
+
+    <div class="principal">
+      <header class="barra-superior">
+        <nav class="migas" aria-label="Ruta actual">
+          <a href="{{ url_for('listar_restaurantes') }}">Restaurantes</a>
+          {% block migas %}{% endblock %}
+        </nav>
+      </header>
+
+      <main class="pagina">
+        {% with mensajes = get_flashed_messages(with_categories=true) %}
+          {% if mensajes %}
+            <div class="avisos">
+              {% for categoria, texto in mensajes %}
+                <div class="aviso {{ categoria }}" role="status">{{ texto }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% block contenido %}{% endblock %}
+      </main>
+    </div>
+  </div>
 </body>
 </html>

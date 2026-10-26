@@ -3,28 +3,38 @@
 {% block titulo %}Restaurantes{% endblock %}
 
 {% block contenido %}
-  <h1>Restaurantes</h1>
+  <header class="pagina-cabecera">
+    <div>
+      <h1>Restaurantes</h1>
+      <p class="texto-tenue">
+        {{ restaurantes|length }} {{ 'restaurante' if restaurantes|length == 1 else 'restaurantes' }}{% if ciudad %} en "{{ ciudad }}"{% endif %}
+      </p>
+    </div>
+    <a class="boton boton-primario" href="{{ url_for('formulario_crear_restaurante') }}">+ Nuevo restaurante</a>
+  </header>
 
   <!-- action: indica a qué URL se envían los datos del form, qué ruta los recibe y los procesa -->
   <!-- method: indica cómo se envia -->
   <!-- get en concreto toma los campos que tiene name y los agrega a la URL como Parámetros de Consulta (Query Parameter) (?) -->
-  <form method="get" action="{{ url_for('listar_restaurantes') }}">
-    <input type="text" name="ciudad" value="{{ ciudad }}" placeholder="Filtrar por ciudad">
-    <button type="submit">Filtrar</button>
+  <form class="filtro" method="get" action="{{ url_for('listar_restaurantes') }}">
+    <input type="search" name="ciudad" value="{{ ciudad }}" placeholder="Filtrar por ciudad…" aria-label="Filtrar por ciudad">
+    <button class="boton" type="submit">Filtrar</button>
+    {% if ciudad %}
+      <a class="boton boton-fantasma" href="{{ url_for('listar_restaurantes') }}">Quitar filtro</a>
+    {% endif %}
   </form>
 
-  <a href="{{ url_for('formulario_crear_restaurante') }}">+ Nuevo Restaurante </a>
-
-  <ul>
+  <ul class="lista">
     {% for r, cantidad in restaurantes %}
       <li>
-        <a href="{{ url_for('detalle_restaurante', restaurante_id=r.id) }}">
-          <strong>{{ r.nombre }}</strong> 
+        <a class="fila" href="{{ url_for('detalle_restaurante', restaurante_id=r.id) }}">
+          <span class="fila-titulo">{{ r.nombre }}</span>
+          <span class="etiqueta">{{ r.ciudad }}</span>
+          <span class="fila-meta">{{ cantidad }} {{ 'plato' if cantidad == 1 else 'platos' }}</span>
         </a>
-        - {{ r.ciudad }} - {{ cantidad }} platos
       </li>
     {% else %}
-      <li>No hay restaurantes {%if ciudad %} en "{{ ciudad }}" {% endif %}.</li>
+      <li class="vacio">No hay restaurantes{% if ciudad %} en "{{ ciudad }}"{% endif %}.</li>
     {% endfor %}
   </ul>
 {% endblock %}

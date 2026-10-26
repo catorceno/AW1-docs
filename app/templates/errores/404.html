@@ -3,7 +3,10 @@
 {% block titulo %}No encontrado{% endblock %}
 
 {% block contenido %}
-  <h1>Recurso no encontrado</h1>
-  <p>El restaurante o la página que buscas no existe.</p>
-  <a href="{{ url_for('listar_restaurantes') }}">Volver al listado</a>
+  <div class="estado-vacio">
+    <p class="estado-vacio-codigo">404</p>
+    <h1>Recurso no encontrado</h1>
+    <p class="texto-tenue">El restaurante o la página que buscas no existe.</p>
+    <a class="boton" href="{{ url_for('listar_restaurantes') }}">Volver al listado</a>
+  </div>
 {% endblock %}
