@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block titulo %}La Carta{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+</head>
+<body>
+  <nav></nav>
+
+  {% with mensajes = get_flashed_messages(with_categories=true) %}
+    {% for categoria, texto in mensajes %}
+      <div class="aviso {{ categoria }}">{{ texto }}</div>
+    {% endfor %}
+  {% endwith %}
+  
+  <main>
+    {% block contenido %}{% endblock %}
+  </main>
+</body>
+</html>

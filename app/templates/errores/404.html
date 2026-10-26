@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block titulo %}No encontrado{% endblock %}
+
+{% block contenido %}
+  <h1>Recurso no encontrado</h1>
+  <p>El restaurante o la página que buscas no existe.</p>
+  <a href="{{ url_for('listar_restaurantes') }}">Volver al listado</a>
+{% endblock %}

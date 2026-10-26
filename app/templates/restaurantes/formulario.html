@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block titulo %}{{ 'Editar restaurante' if restaurante else 'Nuevo restaurante' }}{% endblock %}
+
+{% block contenido %}
+  <!-- ~: operador Jinja para unir textos -->
+  <h1>{{ 'Editar ' ~ restaurante.nombre if restaurante else 'Nuevo restaurante' }}</h1>
+
+  <form method="POST" action="{{ url_for('editar_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('crear_restaurante') }}">
+    <input name="nombre" type="text" placeholder="Nombre" value="{{ restaurante.nombre if restaurante else '' }}" required>
+    <input name="ciudad" type="text" placeholder="Ciudad" value="{{ restaurante.ciudad if restaurante else '' }}" required>
+    <input name="direccion" type="text" placeholder="Dirección" value="{{ (restaurante.direccion or '') if restaurante else '' }}">
+    <input name="telefono" type="text" placeholder="Telefono" value="{{ (restaurante.telefono or '') if restaurante else '' }}">
+
+    <button type="submit">{{'Guardar cambios' if restaurante else 'Crear'}}</button>
+    <a href="{{ url_for('detalle_restaurante', restaurante_id=restaurante.id) if restaurante else url_for('listar_restaurantes') }}">Cancelar</a>
+  </form>
+
+{% endblock %}
