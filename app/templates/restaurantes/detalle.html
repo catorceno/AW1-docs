@@ -14,7 +14,7 @@
 
   <a href="{{ url_for('editar_restaurante', restaurante_id=restaurante.id) }}">Editar</a>
   <form method="post" action="{{ url_for('eliminar_restaurante', restaurante_id=restaurante.id) }}">
-    <button onclick="return confirm('¿Eliminar {{ restaurante.nombre }}?')">Eliminar</button>
+    <button onclick="return confirm('¿Eliminar este restaurante y todos sus platos?')">Eliminar</button>
   </form>
 
   <h2>Platos</h2>
