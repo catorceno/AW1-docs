@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.translation import gettext_lazy as _
 
 class TimeStampedMixin(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -28,17 +29,20 @@ class Genre(UUIDMixin, TimeStampedMixin):
         verbose_name = 'Género'
         verbose_name_plural = "Géneros"
 
-class FilmWork(UUIDMixin, TimeStampedMixin):
-    class Type(models.TextChoices):
-        # nombre en el código = valor en la bd, texto en el admin
-        MOVIE = 'movie', 'Película'
-        TV_SHOW = 'tv_show', 'Serie'
+class Type(models.TextChoices):
+    # nombre en el código = valor en la bd, texto en el admin
+    MOVIE = 'movie', _('movie')
+    TV_SHOW = 'tv_show', _('tv_show')
 
+class FilmWork(UUIDMixin, TimeStampedMixin):
     title = models.CharField('title', max_length=255)
     type = models.CharField('type', max_length=20, choices=Type.choices) # Type.choices -> muestra un desplegable en el admin
     rating = models.FloatField('rating', blank=True, null=True, validators=[MinValueValidator(0), MaxValueValidator(100)]) # sin null=True la bd no acepta la columna vacía
     description = models.TextField('description', blank=True)
     creation_date = models.DateField('creation_date', blank=True, null=True)
+
+    certificate = models.CharField(_('certificate'), max_length=512, blank=True)
+    file_path = models.FileField(_('file'), blank=True, null=True, upload_to='movies/')
 
     genres = models.ManyToManyField(Genre, through='GenreFilmWork')
     personas = models.ManyToManyField('Person', through='PersonFilmWork')
@@ -58,6 +62,12 @@ class GenreFilmWork(UUIDMixin):
 
     class Meta:
         db_table = "content\".\"genre_film_work"
+        constraints = [
+            models.UniqueConstraint(
+                fields=['film_work', 'genre'],
+                name='genre_film_work_film_work_id_genre_id_uniq',
+            ),
+        ]
 
 class Person(UUIDMixin, TimeStampedMixin):
     full_name = models.CharField('full_name', max_length=255)
@@ -68,7 +78,7 @@ class Person(UUIDMixin, TimeStampedMixin):
     class Meta:
         db_table = "content\".\"person"
         verbose_name = 'Persona'
-        verbose_name = "Personas"
+        verbose_name_plural = "Personas"
 
 class PersonFilmWork(UUIDMixin):
     role = models.TextField('roles')
