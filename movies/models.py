@@ -18,8 +18,8 @@ class UUIDMixin(models.Model):
 
 # Create your models here.
 class Genre(UUIDMixin, TimeStampedMixin):
-    name = models.CharField('name', max_length=255)
-    description = models.TextField('description', blank=True)
+    name = models.CharField(_('name'), max_length=255)
+    description = models.TextField(_('description'), blank=True)
 
     def __str__(self):
         return self.name
@@ -35,11 +35,11 @@ class Type(models.TextChoices):
     TV_SHOW = 'tv_show', _('tv_show')
 
 class FilmWork(UUIDMixin, TimeStampedMixin):
-    title = models.CharField('title', max_length=255)
-    type = models.CharField('type', max_length=20, choices=Type.choices) # Type.choices -> muestra un desplegable en el admin
-    rating = models.FloatField('rating', blank=True, null=True, validators=[MinValueValidator(0), MaxValueValidator(100)]) # sin null=True la bd no acepta la columna vacía
-    description = models.TextField('description', blank=True)
-    creation_date = models.DateField('creation_date', blank=True, null=True)
+    title = models.CharField(_('title'), max_length=255)
+    type = models.CharField(_('type'), max_length=20, choices=Type.choices) # Type.choices -> muestra un desplegable en el admin
+    rating = models.FloatField(_('rating'), blank=True, null=True, validators=[MinValueValidator(0), MaxValueValidator(100)]) # sin null=True la bd no acepta la columna vacía
+    description = models.TextField(_('description'), blank=True)
+    creation_date = models.DateField(_('creation_date'), blank=True, null=True)
 
     certificate = models.CharField(_('certificate'), max_length=512, blank=True)
     file_path = models.FileField(_('file'), blank=True, null=True, upload_to='movies/')
@@ -70,7 +70,7 @@ class GenreFilmWork(UUIDMixin):
         ]
 
 class Person(UUIDMixin, TimeStampedMixin):
-    full_name = models.CharField('full_name', max_length=255)
+    full_name = models.CharField(_('full_name'), max_length=255)
 
     def __str__(self):
         return self.full_name
@@ -81,7 +81,7 @@ class Person(UUIDMixin, TimeStampedMixin):
         verbose_name_plural = "Personas"
 
 class PersonFilmWork(UUIDMixin):
-    role = models.TextField('roles')
+    role = models.TextField(_('roles'))
     created = models.DateTimeField(auto_now_add=True)
 
     film_work = models.ForeignKey('FilmWork', on_delete=models.CASCADE)
