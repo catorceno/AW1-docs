@@ -13,4 +13,5 @@ COPY . .
 
 EXPOSE 8000
 
-ENTRYPOINT ["uwsgi", "--module=config.wsgi", "--http", ":8000"]
+# ENTRYPOINT ["uwsgi", "--module=config.wsgi", "--http", ":8000"]
+ENTRYPOINT [ "uwsgi", "--ini", "uwsgi.ini" ]
