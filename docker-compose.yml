@@ -1,7 +1,8 @@
 services:
   admin:
     build: admin/
+    # la ruta es relativa al docker-compose
     env_file:
-      - .env
+      - .env # Dockerfile copia admin/, por tanto no encontraba el .env que está un nivel arriba, docker-compose pasa las variable al contenedor sin meter el archivo dentro de la iamgen
     ports:
       - "8000:8000"
