@@ -9,6 +9,12 @@ class Config:
     SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL", "postgresql://todo:todo@localhost:5432/todoapp")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+    CORS_ORIGINS = [
+        o.strip()
+        for o in os.environ.get("CORS_ORIGINS", "http://localhost:5001").split(",")
+        if o.strip()
+    ]
+
 class ProductionConfig(Config):
     SESSION_COOKIE_SECURE = True      # solo enviar cookies por HTTPS
     SESSION_COOKIE_HTTPONLY = True    # JavaScript no puede leerlas

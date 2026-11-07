@@ -3,10 +3,23 @@ from flask import Flask
 from .config import Config
 from .extensions import db, migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_cors import CORS
 
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # Orígenes permitidos, leídos del entorno
+    origenes = app.config["CORS_ORIGINS"]
+
+    CORS(
+        app,
+        resources={r"/api/*": {"origins": origenes}},
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization"],
+        supports_credentials=True,
+        max_age=600,
+    )
 
     db.init_app(app)
     migrate.init_app(app, db)
