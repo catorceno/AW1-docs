@@ -26,6 +26,7 @@ services:
       SECRET_KEY: ${SECRET_KEY:?SECRET_KEY es obligatorio}
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       GUNICORN_WORKERS: ${GUNICORN_WORKERS:-3}
+      APP_ENV: production
     volumes:
       - static_files:/app/app/static
     command: ["gunicorn", "--config", "gunicorn.conf.py", "wsgi:app"]
