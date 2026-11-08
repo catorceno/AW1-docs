@@ -54,4 +54,4 @@ volumes:
 networks:
   frontend:
   backend:
-    internal:true # ← sin salida a internet
+    internal: true # ← sin salida a internet
