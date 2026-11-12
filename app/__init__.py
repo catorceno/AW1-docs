@@ -1,9 +1,13 @@
+# archivo de la factory
+
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_cors import CORS
 from .config import Config
 from .extensions import db, migrate
 
+# Application Factory porque hace Flask(__name__)
+# (config_class): es lo que permite crear apps distintas con el mismo código
 def create_app(config_class=Config):
     app = Flask(__name__)
     app.config.from_object(config_class)

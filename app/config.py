@@ -29,6 +29,6 @@ class ProductionConfig(Config):
 class TestConfig(Config):
     TESTING = True
     SECRET_KEY = "test-secret"
-    SQLALCHEMY_DATABASE_URI = "sqlite://"
+    SQLALCHEMY_DATABASE_URI = "sqlite://" # sqlite: una base de datos que vive solo en RAM, cada prueba la crea con db.create_all()
     JWT_SECRET_KEY = "test-jwt-secret-with-at-least-32-bytes"
     JWT_EXPIRES_MINUTES = 5
