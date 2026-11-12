@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %} My Todos {% endblock %}
+
+{% block content %}
+    {# Shown without a token #}
+    <!-- hiden en el section y div para que ningun HTML se vea antes que el JS decida cual mostrar con .hidden -->
+    <section id="auth-view" class="card auth-card" hidden>
+        <h2>Sign in</h2>
+        <form id="login-form" class="todo-form">
+            <!-- for= conecta el label con el input para que el cursor entre al input al hacer click sobre el label -->
+            <!-- además por el atributo for= aquí se utiliza id en los inputs, para que pueda encontrarlos -->
+            <label for="username">Username</label> 
+            <input type="text" id="username" name="username" required autocomplete="username"> 
+            <!-- autocomplete lo gestiona el navegador, username dice qué tipo de dato es -->
+            <!-- required evita que el form se envíe si ese campo está vacío -->
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="current-password">
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Sign in</button>
+                <button type="button" id="register" class="btn">Create account</button>
+            </div>
+        </form>
+    </section>
+
+    {# Shown with a token. Filled by app.js from GET /api/todos. #}
+    <div id="todos-view" hidden>
+        <section class="card">
+            <h2>Add a todo</h2>
+
+            <form id="create-form" class="todo-form">
+                <input type="text" name="title" placeholder="What needs to be done?" required maxlength="200">
+                <textarea name="description" placeholder="Optional details" rows="2"></textarea>
+
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
+        </section>
+
+        <section class="card">
+            <h2>Todos <span id="count" class="count"></span></h2>
+    
+            <ul id="todo-list" class="todo-list"></ul>
+            <p id="empty" class="empty" hidden>No todos yet. Add one above.</p>
+        </section>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% endblock %}

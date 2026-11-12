@@ -1,0 +1,8 @@
+* {
+    box-sizing: border-box;
+}
+
+/* `hidden` must win over classes such as .btn that set display. */
+[hidden] {
+    display: none !important;
+}
