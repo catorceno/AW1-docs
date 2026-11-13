@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Todos {% endblock %}
+
+{% block content %}
+    <h1>Todos</h1>
+
+    <form method="post" action="{{ url_for('todos.create') }}">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" maxlength="200" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" name="description"></textarea>
+
+        <button type="submit">Add</button>
+    </form>
+
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <h2>{% if todo.completed %}<s>{{ todo.title }}</s>{% else %}{{ todo.title }}{% endif %}</h2>
+                {% if todo.description %}
+                    <p>{{ todo.description }}</p>
+                {% endif %}
+
+                <form method="post" action="{{ url_for('todos.toggle', todo_id=todo.id) }}">
+                    <button type="submit">{% if todo.completed %}Undo{% else %}Complete{% endif %}</button>
+                </form>
+
+                <a href="{{ url_for('todos.edit', todo_id=todo.id) }}">Edit</a>
+
+                {# Hidden for users without the permission. The decorator on the route
+                   is what actually protects it: this is only a UX nicety. #}
+                {% if 'delete:todos' in current_user.permissions %}
+                    <form method="post" action="{{ url_for('todos.delete', todo_id=todo.id) }}" class="inline" onsubmit="return confirm('Delete this todo?');">
+                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% else %}
+            <li>No hay todos.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
